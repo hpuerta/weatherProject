@@ -36,7 +36,7 @@ class Weather():
                 "humidity": TextHelper.getHumidityText(self.requestWeatherJson['main']['humidity']),
                 "sunrise": DateFormatting.fromTimestampToLocalTime(self.requestWeatherJson['sys']['sunrise'],self.__timezone),
                 "sunset": DateFormatting.fromTimestampToLocalTime(self.requestWeatherJson['sys']['sunset'],self.__timezone),
-                "geo_coordinates": str(self.requestWeatherJson['coord']['lat']) + "," + str(self.requestWeatherJson['coord']['lon']),
+                "geo_coordinates": TextHelper.getCoordinatesText(self.requestWeatherJson['coord']['lat'],self.requestWeatherJson['coord']['lon']),
                 "requested_time":DateFormatting.fromTimestampToLocalDateTime(self.requestWeatherJson['dt'],"GMT")
             }
         return answerToResponse
