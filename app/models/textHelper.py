@@ -46,3 +46,7 @@ class TextHelper():
         breeze = TextHelper.__getWindSpeed(speed)
         direction = TextHelper.__getWindDirection(degrees)
         return breeze + ", " + str(speed) + " m/s, " + direction
+    
+    @staticmethod
+    def getPresureText(pressure:float)->str:
+        return str(pressure) + " hpa"

@@ -90,9 +90,8 @@ def test_weather_datetime_formatting():
     except Exception as e:
         assert False,e
 
-
+from app.models.textHelper import TextHelper
 def test_cloudiness_formatting():
-    from app.models.textHelper import TextHelper
     assert TextHelper.getCloudinessText(0) == "Sky clear"
     assert TextHelper.getCloudinessText(20) == "Few clouds"
     assert TextHelper.getCloudinessText(40) == "Scattered clouds"
@@ -108,8 +107,11 @@ def test_weather_cloudiness_formatting(response):
     assert response['cloudiness'] == "Broken clouds"
 
 def test_wind_formatting():
-    from app.models.textHelper import TextHelper
     assert TextHelper.getWindText(1.5,25) == "Light air, 1.5 m/s, North-Northeast"
 
 def test_weather_wind_formatting(response):
     assert response['wind'] == "Gentle breeze, 4.12 m/s, West"
+
+def test_presure_formatting():
+    assert TextHelper.getPresureText(1010) == "1010 hpa"
+    
