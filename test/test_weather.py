@@ -120,3 +120,6 @@ def test_weather_pressure_formatting(response):
 
 def test_humidity_formatting():
     assert TextHelper.getHumidityText(40) == "40%"
+
+def test_weather_humidity_formatting(response):
+    assert response['humidity'] == "72%"
