@@ -123,3 +123,6 @@ def test_humidity_formatting():
 
 def test_weather_humidity_formatting(response):
     assert response['humidity'] == "72%"
+
+def test_coordinates_formatting():
+    assert TextHelper.getCoordinatesText(40,50) == "[40, 50]"

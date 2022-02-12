@@ -54,3 +54,6 @@ class TextHelper():
     @staticmethod
     def getHumidityText(humidity):
         return str(humidity) + "%"
+    @staticmethod
+    def getCoordinatesText(lat:float,lon:float)->str:
+        return "[" + str(lat) + ", " + str(lon) + "]"
