@@ -1,8 +1,7 @@
 import os
 import requests
-from datetime import datetime
-from zoneinfo import ZoneInfo
 from timezonefinder import TimezoneFinder
+from app.models.dateFormatting import DateFormatting
 
 class Weather():
     __city = ""
@@ -12,14 +11,18 @@ class Weather():
     __API_URL_WEATHER = ""
     requestWeatherJson={}
 
-    def __init__(self,city:str,country:str)->None:
+    def __init__(self,city:str,country:str,mocked_weather_response_url = None)->None:
         self.__city = city
         self.__country = country
         self.query = city + "," + country
-        self.__API_URL_WEATHER = f"http://api.openweathermap.org/data/2.5/weather?q={self.query}&units=metric&appid=" + os.getenv("API_KEY")
+        if mocked_weather_response_url is None:
+            self.__API_URL_WEATHER = f"http://api.openweathermap.org/data/2.5/weather?q={self.query}&units=metric&appid=" + os.getenv("API_KEY")
+        else:
+            self.__API_URL_WEATHER = mocked_weather_response_url
     
     def getWeatherJson(self):
         self.requestWeatherJson = requests.get(f"{self.__API_URL_WEATHER}").json()
+        self.getTimezone(self.requestWeatherJson['coord']['lon'],self.requestWeatherJson['coord']['lat'])
 
     def getResponseData(self):
         self.getWeatherJson()
@@ -30,15 +33,13 @@ class Weather():
                 "cloudiness": self.requestWeatherJson['clouds']['all'],
                 "pressure": self.requestWeatherJson['main']['pressure'],
                 "humidity": self.requestWeatherJson['main']['humidity'],
-                "sunrise": self.requestWeatherJson['sys']['sunrise'],
-                "sunset": self.requestWeatherJson['sys']['sunset'],
+                "sunrise": DateFormatting.fromTimestampToLocalTime(self.requestWeatherJson['sys']['sunrise'],self.__timezone),
+                "sunset": DateFormatting.fromTimestampToLocalTime(self.requestWeatherJson['sys']['sunset'],self.__timezone),
                 "geo_coordinates": str(self.requestWeatherJson['coord']['lat']) + "," + str(self.requestWeatherJson['coord']['lon']),
-                "requested_time": datetime.utcnow()
+                "requested_time":DateFormatting.fromTimestampToLocalDateTime(self.requestWeatherJson['dt'],"GMT")
             }
         return answerToResponse
     def getTimezone(self,lon:float,lat:float):
         tf = TimezoneFinder()
         self.__timezone = tf.timezone_at(lng=lon, lat=lat)
         return self.__timezone
-    def fromTimestampToLocalDateTime(self,timestamp:int)->str:
-        return datetime.fromtimestamp(timestamp).astimezone(ZoneInfo(self.__timezone)).strftime("%Y-%m-%d %H:%M:%S")

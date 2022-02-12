@@ -60,8 +60,31 @@ def test_get_timezone():
 def test_date_format():
     try:
         weather = Weather(**LOCATION)
-        weather.getTimezone(**COORDINATES)
-        response = weather.fromTimestampToLocalDateTime(1644702000)
+        timezone = weather.getTimezone(**COORDINATES)
+        from app.models.dateFormatting import DateFormatting
+        response = DateFormatting.fromTimestampToLocalDateTime(1644702000,timezone)
         assert response == "2022-02-12 16:40:00"
+    except Exception as e:
+        assert False,e
+
+def test_hour_format():
+    try:
+        weather = Weather(**LOCATION)
+        timezone = weather.getTimezone(**COORDINATES)
+        from app.models.dateFormatting import DateFormatting
+        response = DateFormatting.fromTimestampToLocalTime(1644702000,timezone)
+        assert response == "16:40:00"
+    except Exception as e:
+        assert False,e
+
+mocked_api_response_url = "https://run.mocky.io/v3/bc90bc9d-3b34-4a02-8a82-ca24b55ee155"
+def test_weather_formmating():
+    try:
+        weather = Weather(mocked_weather_response_url=mocked_api_response_url,**LOCATION)
+        response = weather.getResponseData()
+        assert response["location_name"] == "Bogota,co"
+        assert response["sunrise"] == "06:11:42"
+        assert response["sunset"] == "18:09:36"
+        assert response["requested_time"] == "2022-02-12 21:20:01"
     except Exception as e:
         assert False,e
