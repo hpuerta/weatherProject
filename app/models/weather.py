@@ -32,7 +32,7 @@ class Weather():
                 "temperature": self.requestWeatherJson['main']['temp'],
                 "wind": TextHelper.getWindText(self.requestWeatherJson['wind']['speed'],self.requestWeatherJson['wind']['deg']),
                 "cloudiness": TextHelper.getCloudinessText(self.requestWeatherJson['clouds']['all']),
-                "pressure": self.requestWeatherJson['main']['pressure'],
+                "pressure": TextHelper.getPressureText(self.requestWeatherJson['main']['pressure']),
                 "humidity": self.requestWeatherJson['main']['humidity'],
                 "sunrise": DateFormatting.fromTimestampToLocalTime(self.requestWeatherJson['sys']['sunrise'],self.__timezone),
                 "sunset": DateFormatting.fromTimestampToLocalTime(self.requestWeatherJson['sys']['sunset'],self.__timezone),

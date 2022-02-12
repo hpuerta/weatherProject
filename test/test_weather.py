@@ -112,6 +112,8 @@ def test_wind_formatting():
 def test_weather_wind_formatting(response):
     assert response['wind'] == "Gentle breeze, 4.12 m/s, West"
 
-def test_presure_formatting():
-    assert TextHelper.getPresureText(1010) == "1010 hpa"
-    
+def test_pressure_formatting():
+    assert TextHelper.getPressureText(1010) == "1010 hpa"
+
+def test_weather_pressure_formatting(response):
+    assert response['pressure'] == "1023 hpa"

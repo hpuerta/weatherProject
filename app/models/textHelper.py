@@ -48,5 +48,5 @@ class TextHelper():
         return breeze + ", " + str(speed) + " m/s, " + direction
     
     @staticmethod
-    def getPresureText(pressure:float)->str:
+    def getPressureText(pressure:float)->str:
         return str(pressure) + " hpa"
