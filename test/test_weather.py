@@ -106,3 +106,20 @@ def response():
 
 def test_weather_cloudiness_formatting(response):
     assert response['cloudiness'] == "Broken clouds"
+
+def test_speed_formatting():
+    from app.models.textHelper import TextHelper
+    assert TextHelper.getWindSpeed(0.4) == 'Calm'
+    assert TextHelper.getWindSpeed(1.5) == 'Light air'
+    assert TextHelper.getWindSpeed(3.3) == 'Light breeze'
+    assert TextHelper.getWindSpeed(5.5) == 'Gentle breeze'
+    assert TextHelper.getWindSpeed(7.9) == 'Moderate breeze'
+    
+def test_direction_formatting():
+    from app.models.textHelper import TextHelper
+    assert TextHelper.getWindDirection(5) == 'North'
+    assert TextHelper.getWindDirection(25) == 'North-Northeast'
+    assert TextHelper.getWindDirection(45) == 'Northeast'
+    assert TextHelper.getWindDirection(65) == 'East-Northeast'
+    assert TextHelper.getWindDirection(95) == 'East'
+    
