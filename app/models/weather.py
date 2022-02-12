@@ -2,6 +2,7 @@ import os
 import requests
 from timezonefinder import TimezoneFinder
 from app.models.dateFormatting import DateFormatting
+from app.models.textHelper import TextHelper
 
 class Weather():
     __city = ""
@@ -30,7 +31,7 @@ class Weather():
                 "location_name": self.query,
                 "temperature": self.requestWeatherJson['main']['temp'],
                 "wind": str(self.requestWeatherJson['wind']['speed']) + "," + str(self.requestWeatherJson['wind']['deg']),
-                "cloudiness": self.requestWeatherJson['clouds']['all'],
+                "cloudiness": TextHelper.getCloudinessText(self.requestWeatherJson['clouds']['all']),
                 "pressure": self.requestWeatherJson['main']['pressure'],
                 "humidity": self.requestWeatherJson['main']['humidity'],
                 "sunrise": DateFormatting.fromTimestampToLocalTime(self.requestWeatherJson['sys']['sunrise'],self.__timezone),

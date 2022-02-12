@@ -98,3 +98,11 @@ def test_cloudiness_formatting():
     assert TextHelper.getCloudinessText(40) == "Scattered clouds"
     assert TextHelper.getCloudinessText(70) == "Broken clouds"
     assert TextHelper.getCloudinessText(100) == "Overcast"
+
+@pytest.fixture
+def response():
+    weather = Weather(mocked_weather_response_url=mocked_api_response_url,**LOCATION)
+    return weather.getResponseData()
+
+def test_weather_cloudiness_formatting(response):
+    assert response['cloudiness'] == "Broken clouds"
