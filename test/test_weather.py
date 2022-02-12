@@ -5,6 +5,7 @@ def test_import_weather():
     except Exception as e:
         assert False,e
 
+import pytest
 from app.models.weather import Weather
 def test_weather_init():
     try:
@@ -78,7 +79,7 @@ def test_hour_format():
         assert False,e
 
 mocked_api_response_url = "https://run.mocky.io/v3/bc90bc9d-3b34-4a02-8a82-ca24b55ee155"
-def test_weather_formmating():
+def test_weather_datetime_formatting():
     try:
         weather = Weather(mocked_weather_response_url=mocked_api_response_url,**LOCATION)
         response = weather.getResponseData()
@@ -88,3 +89,12 @@ def test_weather_formmating():
         assert response["requested_time"] == "2022-02-12 21:20:01"
     except Exception as e:
         assert False,e
+
+
+def test_cloudiness_formatting():
+    from app.models.textHelper import TextHelper
+    assert TextHelper.getCloudinessText(0) == "Sky clear"
+    assert TextHelper.getCloudinessText(20) == "Few clouds"
+    assert TextHelper.getCloudinessText(40) == "Scattered clouds"
+    assert TextHelper.getCloudinessText(70) == "Broken clouds"
+    assert TextHelper.getCloudinessText(100) == "Overcast"
