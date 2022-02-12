@@ -78,7 +78,7 @@ def test_hour_format():
     except Exception as e:
         assert False,e
 
-mocked_api_response_url = "https://run.mocky.io/v3/bc90bc9d-3b34-4a02-8a82-ca24b55ee155"
+mocked_api_response_url = "https://run.mocky.io/v3/0da14529-078b-4a4e-8f55-b2df81639c8f"
 def test_weather_datetime_formatting():
     try:
         weather = Weather(mocked_weather_response_url=mocked_api_response_url,**LOCATION)
@@ -86,7 +86,7 @@ def test_weather_datetime_formatting():
         assert response["location_name"] == "Bogota,co"
         assert response["sunrise"] == "06:11:42"
         assert response["sunset"] == "18:09:36"
-        assert response["requested_time"] == "2022-02-12 21:20:01"
+        assert response["requested_time"] == "2022-02-12 23:29:02"
     except Exception as e:
         assert False,e
 
@@ -110,3 +110,6 @@ def test_weather_cloudiness_formatting(response):
 def test_wind_formatting():
     from app.models.textHelper import TextHelper
     assert TextHelper.getWindText(1.5,25) == "Light air, 1.5 m/s, North-Northeast"
+
+def test_weather_wind_formatting(response):
+    assert response['wind'] == "Gentle breeze, 4.12 m/s, West"
