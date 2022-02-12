@@ -50,3 +50,7 @@ class TextHelper():
     @staticmethod
     def getPressureText(pressure:float)->str:
         return str(pressure) + " hpa"
+
+    @staticmethod
+    def getHumidityText(humidity):
+        return str(humidity) + "%"

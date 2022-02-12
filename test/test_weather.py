@@ -117,3 +117,6 @@ def test_pressure_formatting():
 
 def test_weather_pressure_formatting(response):
     assert response['pressure'] == "1023 hpa"
+
+def test_humidity_formatting():
+    assert TextHelper.getHumidityText(40) == "40%"
