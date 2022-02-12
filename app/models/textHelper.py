@@ -8,7 +8,7 @@ class TextHelper():
         else: return "Overcast"
 
     @staticmethod
-    def getWindSpeed(speed:float) ->str:
+    def __getWindSpeed(speed:float) ->str:
         if speed < 0.5 : return 'Calm'
         elif 0.5 <= speed <=1.5: return 'Light air'
         elif 1.5 < speed <=3.3: return 'Light breeze'
@@ -23,7 +23,7 @@ class TextHelper():
         elif 28.4 < speed <=32.6: return 'Storm'
         else: return "Hurricane"
     @staticmethod
-    def getWindDirection(degrees:float)->str:
+    def __getWindDirection(degrees:float)->str:
         if degrees>348 or degrees<=11: return 'North'
         elif 11<degrees<=33: return 'North-Northeast'
         elif 33<degrees<=56: return 'Northeast'
@@ -40,3 +40,9 @@ class TextHelper():
         elif 281<degrees<=303: return 'West-Northwest'
         elif 303<degrees<=326: return 'Northwest'
         elif 326<degrees<=348: return 'North-Northwest'
+    
+    @staticmethod
+    def getWindText(speed:float,degrees:float) -> str:
+        breeze = TextHelper.__getWindSpeed(speed)
+        direction = TextHelper.__getWindDirection(degrees)
+        return breeze + ", " + str(speed) + " m/s, " + direction
