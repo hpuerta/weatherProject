@@ -5,7 +5,6 @@ def test_import_weather():
     except Exception as e:
         assert False,e
 
-from calendar import LocaleHTMLCalendar
 from app.models.weather import Weather
 def test_weather_init():
     try:
@@ -43,5 +42,26 @@ def test_get_now_data_basic_formated():
         assert "sunset" in response.keys()
         assert "geo_coordinates" in response.keys()
         assert "requested_time" in response.keys()
+    except Exception as e:
+        assert False,e
+#1644702000
+#Saturday, 12 February 2022 16:40:00
+COORDINATES = {
+    'lon' : -74.0817,
+    'lat' : 4.6097
+}
+def test_get_timezone():
+    try:
+        weather = Weather(**LOCATION)
+        response = weather.getTimezone(**COORDINATES)
+        assert response == 'America/Bogota'
+    except Exception as e:
+        assert False,e
+def test_date_format():
+    try:
+        weather = Weather(**LOCATION)
+        weather.getTimezone(**COORDINATES)
+        response = weather.fromTimestampToLocalDateTime(1644702000)
+        assert response == "2022-02-12 16:40:00"
     except Exception as e:
         assert False,e

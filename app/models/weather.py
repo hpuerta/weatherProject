@@ -1,10 +1,13 @@
 import os
 import requests
 from datetime import datetime
+from zoneinfo import ZoneInfo
+from timezonefinder import TimezoneFinder
 
 class Weather():
     __city = ""
     __country = ""
+    __timezone = ""
     query=""
     __API_URL_WEATHER = ""
     requestWeatherJson={}
@@ -33,3 +36,9 @@ class Weather():
                 "requested_time": datetime.utcnow()
             }
         return answerToResponse
+    def getTimezone(self,lon:float,lat:float):
+        tf = TimezoneFinder()
+        self.__timezone = tf.timezone_at(lng=lon, lat=lat)
+        return self.__timezone
+    def fromTimestampToLocalDateTime(self,timestamp:int)->str:
+        return datetime.fromtimestamp(timestamp).astimezone(ZoneInfo(self.__timezone)).strftime("%Y-%m-%d %H:%M:%S")
