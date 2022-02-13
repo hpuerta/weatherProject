@@ -1,5 +1,5 @@
 # Weather Project
-This project was made with Python (Flask) gets the information for weather and forecast from ["OpenWeather API"](https://openweathermap.org/api) and converts this information in a more readable format.
+This project was made with Python (Flask) gets the information for weather and forecast from ["OpenWeather API"](https://openweathermap.org/api) and converts this information to a more readable format.
 ## Returned Dictionary
 The dictionary returned uses the Okta and Beaufurt scales to show the cloudiness and wind speed in a more readable way.
 ```
