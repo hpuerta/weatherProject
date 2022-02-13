@@ -9,3 +9,8 @@ services:
       - "./:/app"
     env_file:
       - .env
+  redis:
+    image: redis
+    container_name: redis-container
+    ports:
+      - "6379:6379"
