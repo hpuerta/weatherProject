@@ -45,7 +45,9 @@ def test_temperature_formatting_celius_fahrenheit():
     assert response.status_code == 200
     assert response.content_type == 'application/json'
     assert response.get_json()["temperature"] == "15.73 ºC"
+    assert response.get_json()["forecast"][0]['temperature'] == "14.47 ºC"
     response =  app.test_client().get('/weather?city=Bogota&country=co&temperature_unit=f')
     assert response.status_code == 200
     assert response.content_type == 'application/json'
     assert response.get_json()["temperature"] == "60.31 ºF"
+    assert response.get_json()["forecast"][0]['temperature'] == "58.05 ºF"

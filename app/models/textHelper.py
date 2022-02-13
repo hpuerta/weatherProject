@@ -1,6 +1,11 @@
 class TextHelper():
+    '''This class deliver static methods to format text for weather values
+    '''
     @staticmethod
     def getCloudinessText(percentage:float) -> str:
+        '''This function converts the cloudiness percentage to
+        human readable text from okta scale
+        '''
         if percentage == 0: return "Sky clear"
         elif 0 < percentage < 31.25: return "Few clouds"
         elif 31.25 <= percentage < 56.25: return "Scattered clouds"
@@ -9,6 +14,9 @@ class TextHelper():
 
     @staticmethod
     def __getWindSpeed(speed:float) ->str:
+        '''This function converts the wind speed in m/s to
+        human readable text from Beaufurt scale
+        '''
         if speed < 0.5 : return 'Calm'
         elif 0.5 <= speed <=1.5: return 'Light air'
         elif 1.5 < speed <=3.3: return 'Light breeze'
@@ -24,6 +32,9 @@ class TextHelper():
         else: return "Hurricane"
     @staticmethod
     def __getWindDirection(degrees:float)->str:
+        '''This function converts the degrees of wind to
+        human readable text
+        '''
         if degrees>348 or degrees<=11: return 'North'
         elif 11<degrees<=33: return 'North-Northeast'
         elif 33<degrees<=56: return 'Northeast'
@@ -43,24 +54,38 @@ class TextHelper():
     
     @staticmethod
     def getWindText(speed:float,degrees:float) -> str:
+        '''This function converts the speed and degrees of wind to
+        human readable text
+        '''
         breeze = TextHelper.__getWindSpeed(speed)
         direction = TextHelper.__getWindDirection(degrees)
         return breeze + ", " + str(speed) + " m/s, " + direction
     
     @staticmethod
     def getPressureText(pressure:float)->str:
+        '''This function adds the units to the pressure value in hpa
+        '''
         return str(pressure) + " hpa"
 
     @staticmethod
     def getHumidityText(humidity):
+        '''This function adds the percentage symbol to the humidity value in percentage
+        '''
         return str(humidity) + "%"
     
     @staticmethod
     def getCoordinatesText(lat:float,lon:float)->str:
+        '''This function format the of coordinates to [latitude, longitude]
+        '''
         return "[" + str(round(lat,2)) + ", " + str(round(lon,2)) + "]"
 
     @staticmethod
     def getTemperatureText(celciusTemperature:float,temperature_unit=None)->str:
+        '''This function returns the temperature text format needed
+            temperature_unit = None -> celciusTemperature ºC / fahrenheitTemperature ºF
+            temperature_unit = 'f' -> fahrenheitTemperature ºF
+            temperature_unit = 'c' -> celciusTemperature ºC
+        '''
         if temperature_unit == 'c':
             return str(celciusTemperature) + " ºC"
         elif temperature_unit == 'f':

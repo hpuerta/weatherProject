@@ -18,26 +18,32 @@ def create_app(test_config=None):
         CACHE_REDIS_URL = os.environ['CACHE_REDIS_URL'],
         CACHE_DEFAULT_TIMEOUT = os.environ['CACHE_DEFAULT_TIMEOUT']
     )
-    
+    #Check if have any argument for the testing enviroment
     if test_config is not None:
         app.config.from_mapping(test_config)
+    
     cache = Cache(app)
+    
     @app.route("/weather",methods=['GET'])
     @cache.cached(timeout=5, query_string=True)
     def get_weather():
         country = request.args.get('country')
         city = request.args.get('city')
         temperature_unit = request.args.get('temperature_unit')
+        #Check the presence of city in the arguments
         if not (city and city.strip()):
             return jsonify({'error': "Unexpected error",
                     'status': 400,
                     'message': "City is needed"}),400
+        #Check the presence of country in the arguments
         if not (country and country.strip()):
             return jsonify({'error': "Unexpected error",
                     'status': 400,
                     'message': "Country is needed"}),400
+        #Check the presence of temperature_unit in the arguments
         if temperature_unit!= 'f' and temperature_unit!= 'c':
             temperature_unit = None
+        #Check the presence of api-key in the arguments
         api_key = request.args.get('api-key')
         if not api_key:
             api_key = os.getenv('API_KEY')

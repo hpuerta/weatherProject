@@ -6,6 +6,10 @@ from app.models.dateFormatting import DateFormatting
 from app.models.textHelper import TextHelper
 
 class Weather():
+    '''This function get the weather and forecast info from one location and
+    returns a dictionary with the information in the required format.
+    The principal function is getCompleteResponseData()
+    '''
     __city = ""
     __country = ""
     __timezone = ""
@@ -38,6 +42,8 @@ class Weather():
             self.__API_URL_FORECAST = mocked_forecast_response_url
     
     def getWeatherJson(self)->None:
+        '''This function get the data of current weather info from https://openweathermap.org API of a given location
+        '''
         try:
             self.requestWeatherJson = requests.get(f"{self.__API_URL_WEATHER}").json()
         except:
@@ -48,12 +54,29 @@ class Weather():
             self.__timezone = "GMT"
 
     def getForecastJson(self)->None:
+        '''This function get the data of forecast info from https://openweathermap.org API of a given location
+        '''
         try:
             self.requestForecastJson = requests.get(f"{self.__API_URL_FORECAST}").json()
         except:
             self.requestForecastJson = {'cod': 503,'message': 'Error getting external server'}
 
     def getCompleteResponseData(self)->Dict:
+        '''This function create a dictionary with the required format
+        using the data getted from https://openweathermap.org API
+            {   
+                "location_name": str,
+                "temperature": str,
+                "wind": str,
+                "cloudiness": str,
+                "pressure": str,
+                "humidity": str,
+                "sunrise": str,
+                "sunset": str,
+                "geo_coordinates": str,
+                "requested_time": str
+            }
+        '''
         self.getWeatherJson()
         if self.requestWeatherJson.get('main') is None and self.requestWeatherJson.get('message') is not None:
             if self.requestWeatherJson and self.requestWeatherJson.get("message") and self.requestWeatherJson.get("cod"):
@@ -84,11 +107,24 @@ class Weather():
         answerToResponse['forecast'] = [self.getIndividualForecastData(forecastElement) for forecastElement in self.requestForecastJson['list']]
         return answerToResponse
     def getTimezone(self,longitude:float,latitude:float)->str:
+        '''This function gets the longitude and latitude of one location
+        to return the time zone
+        '''
         tf = TimezoneFinder()
         self.__timezone = tf.timezone_at(lng=longitude, lat=latitude)
         return self.__timezone
 
     def getIndividualForecastData(self,forecastJson:List)->Dict:
+        '''This gets an individual forecast element from the API to return the formmated dictionary
+            {
+                "datetime": str,
+                "temperature": str,
+                "wind": str,
+                "cloudiness": str,
+                "pressure": str,
+                "humidity": str
+            }
+        '''
         return {"datetime":DateFormatting.fromTimestampToLocalDateTime(forecastJson['dt'],self.__timezone),
         "temperature": TextHelper.getTemperatureText(forecastJson['main']['temp'],temperature_unit=self.__temperature_unit),
         "wind": TextHelper.getWindText(forecastJson['wind']['speed'],forecastJson['wind']['deg']),
