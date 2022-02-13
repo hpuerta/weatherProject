@@ -64,4 +64,6 @@ class TextHelper():
         fahrenheitTemperature = (celciusTemperature*9/5)+32
         if fahrenheitTemperature == int(fahrenheitTemperature):
             fahrenheitTemperature = int(fahrenheitTemperature)
+        else:
+            fahrenheitTemperature = round(fahrenheitTemperature,2)
         return str(celciusTemperature) + " ºC / " + str(fahrenheitTemperature) + " ºF"

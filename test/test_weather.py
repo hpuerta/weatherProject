@@ -45,8 +45,7 @@ def test_get_now_data_basic_formated():
         assert "requested_time" in response.keys()
     except Exception as e:
         assert False,e
-#1644702000
-#Saturday, 12 February 2022 16:40:00
+
 COORDINATES = {
     'lon' : -74.0817,
     'lat' : 4.6097
@@ -79,21 +78,19 @@ def test_hour_format():
         assert False,e
 
 mocked_api_response_url = "https://run.mocky.io/v3/0da14529-078b-4a4e-8f55-b2df81639c8f"
-def test_weather_datetime_formatting():
+@pytest.fixture
+def response():
+    weather = Weather(mocked_weather_response_url=mocked_api_response_url,**LOCATION)
+    return weather.getResponseData()
+
+def test_weather_datetime_formatting(response):
     try:
-        weather = Weather(mocked_weather_response_url=mocked_api_response_url,**LOCATION)
-        response = weather.getResponseData()
         assert response["location_name"] == "Bogota,co"
         assert response["sunrise"] == "06:11:42"
         assert response["sunset"] == "18:09:36"
         assert response["requested_time"] == "2022-02-12 23:29:02"
     except Exception as e:
         assert False,e
-
-@pytest.fixture
-def response():
-    weather = Weather(mocked_weather_response_url=mocked_api_response_url,**LOCATION)
-    return weather.getResponseData()
 
 def test_weather_cloudiness_formatting(response):
     assert response['cloudiness'] == "Broken clouds"
@@ -109,3 +106,6 @@ def test_weather_humidity_formatting(response):
 
 def test_weather_coordinates_formatting(response):
     assert response['geo_coordinates'] == "[4.61, -74.08]"
+
+def test_weather_temperature_formatting(response):
+    assert response['temperature'] == "15.73 ºC / 60.31 ºF"
