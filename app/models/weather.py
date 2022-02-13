@@ -38,14 +38,20 @@ class Weather():
             self.__API_URL_FORECAST = mocked_forecast_response_url
     
     def getWeatherJson(self)->None:
-        self.requestWeatherJson = requests.get(f"{self.__API_URL_WEATHER}").json()
+        try:
+            self.requestWeatherJson = requests.get(f"{self.__API_URL_WEATHER}").json()
+        except:
+            self.requestWeatherJson = {'cod': 503,'message': 'Error getting external server'}
         try:
             self.getTimezone(self.requestWeatherJson['coord']['lon'],self.requestWeatherJson['coord']['lat'])
         except:
             self.__timezone = "GMT"
 
     def getForecastJson(self)->None:
-        self.requestForecastJson = requests.get(f"{self.__API_URL_FORECAST}").json()
+        try:
+            self.requestForecastJson = requests.get(f"{self.__API_URL_FORECAST}").json()
+        except:
+            self.requestForecastJson = {'cod': 503,'message': 'Error getting external server'}
 
     def getCompleteResponseData(self)->Dict:
         self.getWeatherJson()
@@ -55,6 +61,10 @@ class Weather():
                     return {'error': "Unexpected error",
                             'status': self.requestWeatherJson.get("cod"),
                             'message': "Invalid API key"}
+                elif self.requestWeatherJson.get("cod") == 503:
+                    return {'error': "Unexpected error",
+                            'status': self.requestWeatherJson.get("cod"),
+                            'message': self.requestWeatherJson.get("message")}
             return {'error': "Unexpected error",
                     'status': 400,
                     'message': "Unexpected error"}
