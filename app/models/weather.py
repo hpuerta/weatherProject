@@ -41,7 +41,7 @@ class Weather():
         self.getWeatherJson()
         self.getForecastJson()
         answerToResponse = {   
-                "location_name": self.query,
+                "location_name": self.__city + ", " + self.__country.upper(),
                 "temperature": TextHelper.getTemperatureText(self.requestWeatherJson['main']['temp']),
                 "wind": TextHelper.getWindText(self.requestWeatherJson['wind']['speed'],self.requestWeatherJson['wind']['deg']),
                 "cloudiness": TextHelper.getCloudinessText(self.requestWeatherJson['clouds']['all']),
