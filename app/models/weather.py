@@ -6,7 +6,7 @@ from app.models.dateFormatting import DateFormatting
 from app.models.textHelper import TextHelper
 
 class Weather():
-    '''This function get the weather and forecast info from one location and
+    '''This function gets the weather and forecast info from one location and
     returns a dictionary with the information in the required format.
     The principal function is getCompleteResponseData()
     '''
@@ -42,7 +42,7 @@ class Weather():
             self.__API_URL_FORECAST = mocked_forecast_response_url
     
     def getWeatherJson(self)->None:
-        '''This function get the data of current weather info from https://openweathermap.org API of a given location
+        '''This function gets the data of current weather info from https://openweathermap.org API of a given location
         '''
         try:
             self.requestWeatherJson = requests.get(f"{self.__API_URL_WEATHER}").json()
@@ -54,7 +54,7 @@ class Weather():
             self.__timezone = "GMT"
 
     def getForecastJson(self)->None:
-        '''This function get the data of forecast info from https://openweathermap.org API of a given location
+        '''This function gets the data of forecast info from https://openweathermap.org API of a given location
         '''
         try:
             self.requestForecastJson = requests.get(f"{self.__API_URL_FORECAST}").json()
@@ -62,7 +62,7 @@ class Weather():
             self.requestForecastJson = {'cod': 503,'message': 'Error getting external server'}
 
     def getCompleteResponseData(self)->Dict:
-        '''This function create a dictionary with the required format
+        '''This function creates a dictionary with the required format
         using the data getted from https://openweathermap.org API
             {   
                 "location_name": str,

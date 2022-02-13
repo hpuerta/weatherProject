@@ -75,7 +75,7 @@ class TextHelper():
     
     @staticmethod
     def getCoordinatesText(lat:float,lon:float)->str:
-        '''This function format the of coordinates to [latitude, longitude]
+        '''This function format the coordinates to [latitude, longitude]
         '''
         return "[" + str(round(lat,2)) + ", " + str(round(lon,2)) + "]"
 
