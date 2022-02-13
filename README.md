@@ -42,4 +42,4 @@ URL parameters:
     - **city** (required): Is the name of the city you want to search  
     - **country** (required): Is the ISO 3166 code of the country  
     - *temperature_unit* (optional): Sets the unit for temperature values, *f* for fahrenheit, *c* for celcius, defaults return both.  
-    - *api_key* (optional): If you don't have access to the .env file to write your API KEY, this can be entered as an URL parameter.  
+    - *api-key* (optional): If you don't have access to the .env file to write your API KEY, this can be entered as an URL parameter.  
