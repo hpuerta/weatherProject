@@ -25,7 +25,7 @@ def create_app(test_config=None):
     cache = Cache(app)
     
     @app.route("/weather",methods=['GET'])
-    @cache.cached(timeout=5, query_string=True)
+    @cache.cached(timeout=120, query_string=True)
     def get_weather():
         country = request.args.get('country')
         city = request.args.get('city')
