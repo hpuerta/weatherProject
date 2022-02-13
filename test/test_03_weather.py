@@ -159,3 +159,19 @@ def test_use_custom_api_key():
         assert "Invalid API key" in weather.getCompleteResponseData()['message']
     except Exception as e:
         assert False,e
+
+def test_weather_temperature_celcius_formatting():
+    try:
+        weather = Weather(temperature_unit='c',mocked_weather_response_url=mocked_weather_response_url,mocked_forecast_response_url=mocked_forecast_response_url,**LOCATION)
+        response = weather.getCompleteResponseData()
+        assert response['temperature'] == "15.73 ºC"
+    except Exception as e:
+        assert False,e
+
+def test_weather_temperature_fahrenheit_formatting():
+    try:
+        weather = Weather(temperature_unit='f',mocked_weather_response_url=mocked_weather_response_url,mocked_forecast_response_url=mocked_forecast_response_url,**LOCATION)
+        response = weather.getCompleteResponseData()
+        assert response['temperature'] == "60.31 ºF"
+    except Exception as e:
+        assert False,e

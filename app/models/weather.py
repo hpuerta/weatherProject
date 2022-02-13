@@ -9,6 +9,7 @@ class Weather():
     __city = ""
     __country = ""
     __timezone = ""
+    __temperature_unit = None
     query=""
     __API_URL_WEATHER = ""
     __API_URL_FORECAST = ""
@@ -16,10 +17,11 @@ class Weather():
     requestWeatherJson={}
     requestForecastJson={}
 
-    def __init__(self,city:str,country:str,mocked_weather_response_url:str = None,mocked_forecast_response_url:str=None,API_KEY=None)->None:
+    def __init__(self,city:str,country:str,mocked_weather_response_url:str = None,mocked_forecast_response_url:str=None,API_KEY=None,temperature_unit=None)->None:
         self.__city = city
         self.__country = country
         self.query = city + "," + country
+        self.__temperature_unit = temperature_unit
         if API_KEY is None:
             self.__API_KEY = os.getenv('API_KEY')
         else:
@@ -59,7 +61,7 @@ class Weather():
         self.getForecastJson()
         answerToResponse = {   
                 "location_name": self.__city + ", " + self.__country.upper(),
-                "temperature": TextHelper.getTemperatureText(self.requestWeatherJson['main']['temp']),
+                "temperature": TextHelper.getTemperatureText(self.requestWeatherJson['main']['temp'],temperature_unit=self.__temperature_unit),
                 "wind": TextHelper.getWindText(self.requestWeatherJson['wind']['speed'],self.requestWeatherJson['wind']['deg']),
                 "cloudiness": TextHelper.getCloudinessText(self.requestWeatherJson['clouds']['all']),
                 "pressure": TextHelper.getPressureText(self.requestWeatherJson['main']['pressure']),
@@ -78,7 +80,7 @@ class Weather():
 
     def getIndividualForecastData(self,forecastJson:List)->Dict:
         return {"datetime":DateFormatting.fromTimestampToLocalDateTime(forecastJson['dt'],self.__timezone),
-        "temperature": TextHelper.getTemperatureText(forecastJson['main']['temp']),
+        "temperature": TextHelper.getTemperatureText(forecastJson['main']['temp'],temperature_unit=self.__temperature_unit),
         "wind": TextHelper.getWindText(forecastJson['wind']['speed'],forecastJson['wind']['deg']),
         "cloudiness": TextHelper.getCloudinessText(forecastJson['clouds']['all']),
         "pressure": TextHelper.getPressureText(forecastJson['main']['pressure']),

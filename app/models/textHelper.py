@@ -60,10 +60,17 @@ class TextHelper():
         return "[" + str(round(lat,2)) + ", " + str(round(lon,2)) + "]"
 
     @staticmethod
-    def getTemperatureText(celciusTemperature:float)->str:
-        fahrenheitTemperature = (celciusTemperature*9/5)+32
-        if fahrenheitTemperature == int(fahrenheitTemperature):
-            fahrenheitTemperature = int(fahrenheitTemperature)
-        else:
+    def getTemperatureText(celciusTemperature:float,temperature_unit=None)->str:
+        if temperature_unit == 'c':
+            return str(celciusTemperature) + " ºC"
+        elif temperature_unit == 'f':
+            fahrenheitTemperature = (celciusTemperature*9/5)+32
             fahrenheitTemperature = round(fahrenheitTemperature,2)
-        return str(celciusTemperature) + " ºC / " + str(fahrenheitTemperature) + " ºF"
+            return str(fahrenheitTemperature) + " ºF"
+        else:
+            fahrenheitTemperature = (celciusTemperature*9/5)+32
+            if fahrenheitTemperature == int(fahrenheitTemperature):
+                fahrenheitTemperature = int(fahrenheitTemperature)
+            else:
+                fahrenheitTemperature = round(fahrenheitTemperature,2)
+            return str(celciusTemperature) + " ºC / " + str(fahrenheitTemperature) + " ºF"

@@ -30,9 +30,22 @@ def test_use_custom_api_key_flask(app):
 def test_error_city_none_flask(app):
     response =  app.test_client().get('/weather?city=&country=co')
     assert response.status_code == 400
+    assert response.content_type == 'application/json'
     assert response.get_json()['message'] == "City is needed"
 
 def test_error_country_none_flask(app):
     response =  app.test_client().get('/weather?city=Medellin&country=')
     assert response.status_code == 400
+    assert response.content_type == 'application/json'
     assert response.get_json()['message'] == "Country is needed"
+
+def test_temperature_formatting_celius_fahrenheit():
+    app = create_app(CONFIG)
+    response =  app.test_client().get('/weather?city=Bogota&country=co&temperature_unit=c')
+    assert response.status_code == 200
+    assert response.content_type == 'application/json'
+    assert response.get_json()["temperature"] == "15.73 ºC"
+    response =  app.test_client().get('/weather?city=Bogota&country=co&temperature_unit=f')
+    assert response.status_code == 200
+    assert response.content_type == 'application/json'
+    assert response.get_json()["temperature"] == "60.31 ºF"

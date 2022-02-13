@@ -27,6 +27,7 @@ def create_app(test_config=None):
     def get_weather():
         country = request.args.get('country')
         city = request.args.get('city')
+        temperature_unit = request.args.get('temperature_unit')
         if not (city and city.strip()):
             return jsonify({'error': "Unexpected error",
                     'status': 400,
@@ -35,8 +36,17 @@ def create_app(test_config=None):
             return jsonify({'error': "Unexpected error",
                     'status': 400,
                     'message': "Country is needed"}),400
+        if temperature_unit!= 'f' and temperature_unit!= 'c':
+            temperature_unit = None
         api_key = request.args.get('api-key')
-        weather = Weather(city,country,mocked_weather_response_url=app.config['MOCKED_WEATHER'],mocked_forecast_response_url=app.config['MOCKED_FORECAST'],API_KEY=api_key)
+        if not api_key:
+            api_key = os.getenv('API_KEY')
+        weather = Weather(city,
+                            country,
+                            mocked_weather_response_url=app.config['MOCKED_WEATHER'],
+                            mocked_forecast_response_url=app.config['MOCKED_FORECAST'],
+                            API_KEY=api_key,
+                            temperature_unit=temperature_unit)
         answerToResponse = weather.getCompleteResponseData()
         if answerToResponse.get('status'):
             status_code = int(answerToResponse['status'])
