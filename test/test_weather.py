@@ -90,14 +90,6 @@ def test_weather_datetime_formatting():
     except Exception as e:
         assert False,e
 
-from app.models.textHelper import TextHelper
-def test_cloudiness_formatting():
-    assert TextHelper.getCloudinessText(0) == "Sky clear"
-    assert TextHelper.getCloudinessText(20) == "Few clouds"
-    assert TextHelper.getCloudinessText(40) == "Scattered clouds"
-    assert TextHelper.getCloudinessText(70) == "Broken clouds"
-    assert TextHelper.getCloudinessText(100) == "Overcast"
-
 @pytest.fixture
 def response():
     weather = Weather(mocked_weather_response_url=mocked_api_response_url,**LOCATION)
@@ -106,26 +98,14 @@ def response():
 def test_weather_cloudiness_formatting(response):
     assert response['cloudiness'] == "Broken clouds"
 
-def test_wind_formatting():
-    assert TextHelper.getWindText(1.5,25) == "Light air, 1.5 m/s, North-Northeast"
-
 def test_weather_wind_formatting(response):
     assert response['wind'] == "Gentle breeze, 4.12 m/s, West"
-
-def test_pressure_formatting():
-    assert TextHelper.getPressureText(1010) == "1010 hpa"
 
 def test_weather_pressure_formatting(response):
     assert response['pressure'] == "1023 hpa"
 
-def test_humidity_formatting():
-    assert TextHelper.getHumidityText(40) == "40%"
-
 def test_weather_humidity_formatting(response):
     assert response['humidity'] == "72%"
-
-def test_coordinates_formatting():
-    assert TextHelper.getCoordinatesText(40,50) == "[40, 50]"
 
 def test_weather_coordinates_formatting(response):
     assert response['geo_coordinates'] == "[4.61, -74.08]"

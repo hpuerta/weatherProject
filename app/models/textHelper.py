@@ -54,6 +54,14 @@ class TextHelper():
     @staticmethod
     def getHumidityText(humidity):
         return str(humidity) + "%"
+    
     @staticmethod
     def getCoordinatesText(lat:float,lon:float)->str:
         return "[" + str(round(lat,2)) + ", " + str(round(lon,2)) + "]"
+
+    @staticmethod
+    def getTemperatureText(celciusTemperature:float)->str:
+        fahrenheitTemperature = (celciusTemperature*9/5)+32
+        if fahrenheitTemperature == int(fahrenheitTemperature):
+            fahrenheitTemperature = int(fahrenheitTemperature)
+        return str(celciusTemperature) + " ºC / " + str(fahrenheitTemperature) + " ºF"
