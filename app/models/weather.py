@@ -10,20 +10,31 @@ class Weather():
     __timezone = ""
     query=""
     __API_URL_WEATHER = ""
+    __API_URL_FORECAST = ""
     requestWeatherJson={}
+    requestForecastJson={}
 
-    def __init__(self,city:str,country:str,mocked_weather_response_url = None)->None:
+    def __init__(self,city:str,country:str,mocked_weather_response_url = None,mocked_forecast_response_url=None)->None:
         self.__city = city
         self.__country = country
         self.query = city + "," + country
+
         if mocked_weather_response_url is None:
             self.__API_URL_WEATHER = f"http://api.openweathermap.org/data/2.5/weather?q={self.query}&units=metric&appid=" + os.getenv("API_KEY")
         else:
             self.__API_URL_WEATHER = mocked_weather_response_url
+
+        if mocked_forecast_response_url is None:
+            self.__API_URL_FORECAST = f"http://api.openweathermap.org/data/2.5/forecast?q={self.query}&units=metric&appid=" + os.getenv("API_KEY")
+        else:
+            self.__API_URL_FORECAST = mocked_forecast_response_url
     
     def getWeatherJson(self):
         self.requestWeatherJson = requests.get(f"{self.__API_URL_WEATHER}").json()
         self.getTimezone(self.requestWeatherJson['coord']['lon'],self.requestWeatherJson['coord']['lat'])
+
+    def getForecastJson(self):
+        self.requestForecastJson = requests.get(f"{self.__API_URL_FORECAST}").json()
 
     def getResponseData(self):
         self.getWeatherJson()

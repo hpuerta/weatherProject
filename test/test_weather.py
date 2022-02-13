@@ -77,11 +77,15 @@ def test_hour_format():
     except Exception as e:
         assert False,e
 
-mocked_api_response_url = "https://run.mocky.io/v3/0da14529-078b-4a4e-8f55-b2df81639c8f"
+mocked_weather_response_url = "https://run.mocky.io/v3/0da14529-078b-4a4e-8f55-b2df81639c8f"
+mocked_forecast_response_url = "https://run.mocky.io/v3/ee44a2f6-353e-406a-bc0a-2462e276501d"
 @pytest.fixture
 def response():
-    weather = Weather(mocked_weather_response_url=mocked_api_response_url,**LOCATION)
-    return weather.getResponseData()
+    try:
+        weather = Weather(mocked_weather_response_url=mocked_weather_response_url,mocked_forecast_response_url=mocked_forecast_response_url,**LOCATION)
+        return weather.getResponseData()
+    except:
+        return None
 
 def test_weather_datetime_formatting(response):
     try:
@@ -93,19 +97,47 @@ def test_weather_datetime_formatting(response):
         assert False,e
 
 def test_weather_cloudiness_formatting(response):
-    assert response['cloudiness'] == "Broken clouds"
+    try:
+        assert response['cloudiness'] == "Broken clouds"
+    except Exception as e:
+        assert False,e
 
 def test_weather_wind_formatting(response):
-    assert response['wind'] == "Gentle breeze, 4.12 m/s, West"
+    try:
+        assert response['wind'] == "Gentle breeze, 4.12 m/s, West"
+    except Exception as e:
+        assert False,e
 
 def test_weather_pressure_formatting(response):
-    assert response['pressure'] == "1023 hpa"
+    try:
+        assert response['pressure'] == "1023 hpa"
+    except Exception as e:
+        assert False,e
 
 def test_weather_humidity_formatting(response):
-    assert response['humidity'] == "72%"
+    try:
+        assert response['humidity'] == "72%"
+    except Exception as e:
+        assert False,e
 
 def test_weather_coordinates_formatting(response):
-    assert response['geo_coordinates'] == "[4.61, -74.08]"
+    try:
+        assert response['geo_coordinates'] == "[4.61, -74.08]"
+    except Exception as e:
+        assert False,e
 
 def test_weather_temperature_formatting(response):
-    assert response['temperature'] == "15.73 ºC / 60.31 ºF"
+    try:
+        assert response['temperature'] == "15.73 ºC / 60.31 ºF"
+    except Exception as e:
+        assert False,e
+
+def test_get_forecast_api_data_json():
+    try:
+        weather = Weather(**LOCATION)
+        weather.getForecastJson()
+        response = weather.requestForecastJson
+        assert "list" in response.keys()
+        assert response["city"]["name"] == "Bogota"
+    except Exception as e:
+        assert False,e
