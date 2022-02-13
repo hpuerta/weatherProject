@@ -15,3 +15,9 @@ class DateFormatting():
         to return the local time formatted
         '''
         return datetime.fromtimestamp(timestamp).astimezone(ZoneInfo(timezone)).strftime("%H:%M:%S")
+
+    def fromTimestampToGMTDateTime(timestamp:int)->str:
+        '''This function gets the unix timepestamp and timezone, 
+        to return the GMT date and time formatted
+        '''
+        return datetime.fromtimestamp(timestamp).astimezone(ZoneInfo('GMT')).strftime("%Y-%m-%d %H:%M:%S %Z")

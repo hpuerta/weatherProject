@@ -92,7 +92,7 @@ def test_weather_datetime_formatting(response):
         assert response["location_name"] == "Bogota, CO"
         assert response["sunrise"] == "06:11:42"
         assert response["sunset"] == "18:09:36"
-        assert response["requested_time"] == "2022-02-12 23:29:02"
+        assert response["requested_time"] == "2022-02-12 23:29:02 GMT"
     except Exception as e:
         assert False,e
 

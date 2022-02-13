@@ -102,7 +102,7 @@ class Weather():
                 "sunrise": DateFormatting.fromTimestampToLocalTime(self.requestWeatherJson['sys']['sunrise'],self.__timezone),
                 "sunset": DateFormatting.fromTimestampToLocalTime(self.requestWeatherJson['sys']['sunset'],self.__timezone),
                 "geo_coordinates": TextHelper.getCoordinatesText(self.requestWeatherJson['coord']['lat'],self.requestWeatherJson['coord']['lon']),
-                "requested_time": DateFormatting.fromTimestampToLocalDateTime(self.requestWeatherJson['dt'],"GMT")
+                "requested_time": DateFormatting.fromTimestampToGMTDateTime(self.requestWeatherJson['dt'])
             }
         answerToResponse['forecast'] = [self.getIndividualForecastData(forecastElement) for forecastElement in self.requestForecastJson['list']]
         return answerToResponse
