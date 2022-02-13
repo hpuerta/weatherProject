@@ -33,7 +33,7 @@ You must to have installed Docker and Docker Compose to run this web app.
 2. Rename the .env-example file to .env  
 3. Edit the .env file and add your api key for OpenWeather  
 4. Run in your terminal inside the cloned repository folder:  
-    ```docker-compose -up```  
+    ```docker-compose up```  
 **Note: You'll need the port 5000 for Flask and the port 6379 for Redis**
 
 ## Entry point
