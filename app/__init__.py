@@ -27,7 +27,12 @@ def create_app(test_config=None):
     def get_weather():
         country = request.args.get('country')
         city = request.args.get('city')
-        weather = Weather(city,country,mocked_weather_response_url=app.config['MOCKED_WEATHER'],mocked_forecast_response_url=app.config['MOCKED_FORECAST'])
-        answerToResponse = weather.getResponseData()
-        return jsonify(answerToResponse),200
+        api_key = request.args.get('api-key')
+        weather = Weather(city,country,mocked_weather_response_url=app.config['MOCKED_WEATHER'],mocked_forecast_response_url=app.config['MOCKED_FORECAST'],API_KEY=api_key)
+        answerToResponse = weather.getCompleteResponseData()
+        if answerToResponse.get('status'):
+            status_code = int(answerToResponse['status'])
+        else:
+            status_code = 200
+        return jsonify(answerToResponse),status_code
     return app
