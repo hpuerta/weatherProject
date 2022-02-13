@@ -23,10 +23,18 @@ def create_app(test_config=None):
         app.config.from_mapping(test_config)
     cache = Cache(app)
     @app.route("/weather",methods=['GET'])
-    @cache.cached(timeout=120, query_string=True)
+    @cache.cached(timeout=5, query_string=True)
     def get_weather():
         country = request.args.get('country')
         city = request.args.get('city')
+        if not (city and city.strip()):
+            return jsonify({'error': "Unexpected error",
+                    'status': 400,
+                    'message': "City is needed"}),400
+        if not (country and country.strip()):
+            return jsonify({'error': "Unexpected error",
+                    'status': 400,
+                    'message': "Country is needed"}),400
         api_key = request.args.get('api-key')
         weather = Weather(city,country,mocked_weather_response_url=app.config['MOCKED_WEATHER'],mocked_forecast_response_url=app.config['MOCKED_FORECAST'],API_KEY=api_key)
         answerToResponse = weather.getCompleteResponseData()

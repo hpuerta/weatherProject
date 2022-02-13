@@ -17,9 +17,22 @@ def test_get_flask_answer():
     assert response.get_json()['forecast'][0]['pressure'] == "1022 hpa"
     assert response.get_json()['forecast'][2]['humidity'] == "91%"
 
-def test_use_custom_api_key_flask():
-    app = create_app({'TESTING':True})
+@pytest.fixture
+def app():
+    return create_app({'TESTING':True})
+    
+def test_use_custom_api_key_flask(app):
     response =  app.test_client().get('/weather?city=Bogota&country=co&api-key=1234')
     assert response.status_code == 401
     assert response.content_type == 'application/json'
     assert "Invalid API key" in response.get_json()['message']
+
+def test_error_city_none_flask(app):
+    response =  app.test_client().get('/weather?city=&country=co')
+    assert response.status_code == 400
+    assert response.get_json()['message'] == "City is needed"
+
+def test_error_country_none_flask(app):
+    response =  app.test_client().get('/weather?city=Medellin&country=')
+    assert response.status_code == 400
+    assert response.get_json()['message'] == "Country is needed"
