@@ -141,3 +141,14 @@ def test_get_forecast_api_data_json():
         assert response["city"]["name"] == "Bogota"
     except Exception as e:
         assert False,e
+
+def test_get_forecast_data_formatted(response):
+    try:
+        assert "temperature" in response['forecast'][0].keys()
+        assert "wind" in response['forecast'][0].keys()
+        assert "cloudiness" in response['forecast'][0].keys()
+        assert "pressure" in response['forecast'][0].keys()
+        assert "humidity" in response['forecast'][0].keys()
+        assert "datetime" in response['forecast'][0].keys()
+    except Exception as e:
+        assert False,e

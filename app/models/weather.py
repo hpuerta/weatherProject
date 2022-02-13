@@ -1,4 +1,5 @@
 import os
+from typing import Dict, List
 import requests
 from timezonefinder import TimezoneFinder
 from app.models.dateFormatting import DateFormatting
@@ -38,6 +39,7 @@ class Weather():
 
     def getResponseData(self):
         self.getWeatherJson()
+        self.getForecastJson()
         answerToResponse = {   
                 "location_name": self.query,
                 "temperature": TextHelper.getTemperatureText(self.requestWeatherJson['main']['temp']),
@@ -50,8 +52,17 @@ class Weather():
                 "geo_coordinates": TextHelper.getCoordinatesText(self.requestWeatherJson['coord']['lat'],self.requestWeatherJson['coord']['lon']),
                 "requested_time": DateFormatting.fromTimestampToLocalDateTime(self.requestWeatherJson['dt'],"GMT")
             }
+        answerToResponse['forecast'] = [self.getIndividualForecastData(forecastElement) for forecastElement in self.requestForecastJson['list']]
         return answerToResponse
     def getTimezone(self,lon:float,lat:float):
         tf = TimezoneFinder()
         self.__timezone = tf.timezone_at(lng=lon, lat=lat)
         return self.__timezone
+
+    def getIndividualForecastData(self,forecastJson:List)->Dict:
+        return {"datetime":DateFormatting.fromTimestampToLocalDateTime(forecastJson['dt'],self.__timezone),
+        "temperature": TextHelper.getTemperatureText(forecastJson['main']['temp']),
+        "wind": TextHelper.getWindText(forecastJson['wind']['speed'],forecastJson['wind']['deg']),
+        "cloudiness": TextHelper.getCloudinessText(forecastJson['clouds']['all']),
+        "pressure": TextHelper.getPressureText(forecastJson['main']['pressure']),
+        "humidity": TextHelper.getHumidityText(forecastJson['main']['humidity'])}
